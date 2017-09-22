@@ -36,7 +36,8 @@ func getFiles(path string) (map[string]int64, int64, error) {
 		name := f.Name()
 		if name == ".DS_Store" {
 			continue
-		} else if f.IsDir() {
+		}
+		if f.IsDir() {
 			blogDirFiles, timeStamp, err := getFiles(path + "/" + name)
 			if err != nil {
 				return make(map[string]int64), 0, err
@@ -44,20 +45,19 @@ func getFiles(path string) (map[string]int64, int64, error) {
 			if lastUpdate < timeStamp {
 				lastUpdate = timeStamp
 			}
-			for key, value := range blogDirFiles {
-				blogFiles[key] = value
+			for k, v := range blogDirFiles {
+				blogFiles[k] = v
 			}
 		} else {
 			timeStamp := f.ModTime().Unix()
+			blogFiles[path+"/"+name] = timeStamp
 			if lastUpdate < timeStamp {
 				lastUpdate = timeStamp
 			}
-			blogFiles[path+"/"+name] = timeStamp
 		}
 	}
 
 	return blogFiles, lastUpdate, nil
-
 }
 
 func getUpdatedFiles(date int64, files map[string]int64, blogPath string) []*Content {
