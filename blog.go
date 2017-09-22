@@ -14,6 +14,7 @@ type Content struct {
 	Body *bytes.Reader
 	Type string
 	Size int64
+	Path string
 }
 
 // GetContentToUpdate functions for get list of updated static blog files
@@ -80,5 +81,5 @@ func getContent(path string) (*Content, error) {
 	fileBytes := bytes.NewReader(buffer)
 	fileType := http.DetectContentType(buffer)
 
-	return &Content{Body: fileBytes, Size: size, Type: fileType}, nil
+	return &Content{Body: fileBytes, Size: size, Type: fileType, Path: path}, nil
 }
