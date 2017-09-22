@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 )
@@ -19,41 +18,53 @@ type Content struct {
 
 // GetContentToUpdate functions for get list of updated static blog files
 func GetContentToUpdate(blogPath string) []*Content {
-	files, date := getFilesWithModDate(blogPath)
+	files, date, _ := getFiles(blogPath + "/public")
 	return getUpdatedFiles(date, files, blogPath)
 }
 
-// todo : should be refactored for recursion possibility
-func getFilesWithModDate(blogPath string) (map[string]int64, int64) {
-	files, err := ioutil.ReadDir(blogPath + "/public")
+func getFiles(path string) (map[string]int64, int64, error) {
+	files, err := ioutil.ReadDir(path)
 	if err != nil {
-		log.Fatal(err)
-		os.Exit(0)
+		fmt.Printf("Cannot read directore by path: %s\n", path)
+		return make(map[string]int64), 0, err
 	}
 
 	var lastUpdate int64
 	var blogFiles = make(map[string]int64)
+
 	for _, f := range files {
 		name := f.Name()
-		// todo : make it recursive here
-		if name == ".DS_Store" || f.IsDir() {
+		if name == ".DS_Store" {
 			continue
+		} else if f.IsDir() {
+			blogDirFiles, timeStamp, err := getFiles(path + "/" + name)
+			if err != nil {
+				return make(map[string]int64), 0, err
+			}
+			if lastUpdate < timeStamp {
+				lastUpdate = timeStamp
+			}
+			for key, value := range blogDirFiles {
+				blogFiles[key] = value
+			}
+		} else {
+			timeStamp := f.ModTime().Unix()
+			if lastUpdate < timeStamp {
+				lastUpdate = timeStamp
+			}
+			blogFiles[path+"/"+name] = timeStamp
 		}
-		timeStamp := f.ModTime().Unix()
-		if lastUpdate < timeStamp {
-			lastUpdate = timeStamp
-		}
-		blogFiles[name] = timeStamp
 	}
 
-	return blogFiles, lastUpdate
+	return blogFiles, lastUpdate, nil
+
 }
 
 func getUpdatedFiles(date int64, files map[string]int64, blogPath string) []*Content {
 	var final []*Content
-	for name, lastUpdated := range files {
+	for path, lastUpdated := range files {
 		if lastUpdated == date {
-			content, _ := getContent(blogPath + "/public/" + name)
+			content, _ := getContent(path)
 			final = append(final, content)
 		}
 	}
