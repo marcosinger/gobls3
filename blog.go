@@ -50,13 +50,9 @@ func getFilesWithModDate(blogPath string) (map[string]int64, int64) {
 }
 
 func getUpdatedFiles(date int64, files map[string]int64, blogPath string) []*Content {
-
 	var final []*Content
-
-	//var updated []string
 	for name, lastUpdated := range files {
 		if lastUpdated == date {
-			//updated = append(updated, blogPath+"/public/"+name)
 			content, _ := getContent(blogPath + "/public/" + name)
 			final = append(final, content)
 		}
@@ -77,6 +73,7 @@ func getContent(path string) (*Content, error) {
 	size := fileInfo.Size()
 
 	buffer := make([]byte, size)
+
 	file.Read(buffer)
 	fileBytes := bytes.NewReader(buffer)
 	fileType := http.DetectContentType(buffer)
