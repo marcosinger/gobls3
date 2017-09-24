@@ -16,7 +16,7 @@ func PublishContent(config *Config, content []*Content) {
 		fmt.Printf("bad credentials: %s", err)
 	}
 
-	cnf := aws.NewConfig().WithRegion("eu-west-1").WithCredentials(creds)
+	cnf := aws.NewConfig().WithRegion(config.AwsBucketRegion).WithCredentials(creds)
 	scv := s3.New(session.New(cnf))
 
 	messages := make(chan string)

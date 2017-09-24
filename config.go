@@ -8,11 +8,12 @@ import (
 
 // Config contain the configuration
 type Config struct {
-	BlogPath  string `json:"blog_path"`
-	AwsKey    string `json:"aws_access_key_id"`
-	AwsSecret string `json:"aws_secret_access_key"`
-	AwsBucket string `json:"aws_s3_bucket"`
-	Debug     bool   `json:"debug"`
+	BlogPath        string `json:"blog_path"`
+	AwsKey          string `json:"aws_access_key_id"`
+	AwsSecret       string `json:"aws_secret_access_key"`
+	AwsBucket       string `json:"aws_s3_bucket"`
+	AwsBucketRegion string `json:"aws_s3_bucket_region"`
+	Debug           bool   `json:"debug"`
 }
 
 // LoadConfig function for get configuration from file
