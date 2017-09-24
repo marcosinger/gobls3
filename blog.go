@@ -101,6 +101,6 @@ func getContent(path string, blogPath string) (*Content, error) {
 		Size:     size,
 		Type:     fileType,
 		Path:     path,
-		BlogPath: strings.TrimPrefix(path, blogPath),
+		BlogPath: strings.TrimPrefix(path, blogPath+"/public"),
 	}, nil
 }
