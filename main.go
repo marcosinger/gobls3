@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 )
 
@@ -13,18 +13,10 @@ func main() {
 	exitOnError(err)
 
 	if config.Debug {
-		showContentToPublish(files)
+		log.Printf("Detected %d files that should be upload to S3\n\n", len(files))
 	}
 
 	PublishContent(config, files)
-}
-
-func showContentToPublish(files []*Content) {
-	fmt.Printf("%d files should be upload to S3\n\n", len(files))
-	for _, file := range files {
-		fmt.Printf("File: %s\n", file.BlogPath)
-	}
-	fmt.Printf("\n")
 }
 
 func exitOnError(err error) {

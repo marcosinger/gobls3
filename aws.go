@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -11,6 +13,8 @@ import (
 
 // PublishContent function for put blog static files to AWS S3
 func PublishContent(config *Config, content []*Content) {
+	start := time.Now()
+
 	creds := credentials.NewStaticCredentials(config.AwsKey, config.AwsSecret, "")
 	if _, err := creds.Get(); err != nil {
 		fmt.Printf("bad credentials: %s", err)
@@ -29,9 +33,13 @@ func PublishContent(config *Config, content []*Content) {
 	files := len(content)
 	for i := 1; i <= files; i++ {
 		if config.Debug {
-			fmt.Print(<-messages)
+			log.Print(<-messages)
 		}
 	}
+
+	fmt.Println()
+	elapsed := time.Since(start)
+	log.Printf("Uploading finished. It took %s", elapsed)
 }
 
 func upload(scv *s3.S3, file *Content, config *Config, c chan string) {
