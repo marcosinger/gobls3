@@ -24,6 +24,7 @@ func showContentToPublish(files []*Content) {
 	for _, file := range files {
 		fmt.Printf("File: %s\n", file.BlogPath)
 	}
+	fmt.Printf("\n\n")
 }
 
 func exitOnError(err error) {
