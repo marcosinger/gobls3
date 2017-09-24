@@ -12,6 +12,7 @@ type Config struct {
 	AwsKey    string `json:"aws_access_key_id"`
 	AwsSecret string `json:"aws_secret_access_key"`
 	AwsBucket string `json:"aws_s3_bucket"`
+	Debug     bool   `json:"debug"`
 }
 
 // LoadConfig function for get configuration from file
