@@ -22,7 +22,7 @@ func main() {
 func showContentToPublish(files []*Content) {
 	fmt.Printf("%d files should be upload to S3\n\n", len(files))
 	for _, file := range files {
-		fmt.Printf("Filepath: %s\n", file.Path)
+		fmt.Printf("File: %s\n", file.BlogPath)
 	}
 }
 
