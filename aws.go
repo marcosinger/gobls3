@@ -15,12 +15,12 @@ import (
 func PublishContent(config *Config, content []*Content) {
 	start := time.Now()
 
-	creds := credentials.NewStaticCredentials(config.AwsKey, config.AwsSecret, "")
+	creds := credentials.NewStaticCredentials(config.Aws.Key, config.Aws.Secret, "")
 	if _, err := creds.Get(); err != nil {
 		fmt.Printf("bad credentials: %s", err)
 	}
 
-	cnf := aws.NewConfig().WithRegion(config.AwsBucketRegion).WithCredentials(creds)
+	cnf := aws.NewConfig().WithRegion(config.Aws.Region).WithCredentials(creds)
 	scv := s3.New(session.New(cnf))
 
 	messages := make(chan string)
@@ -46,7 +46,7 @@ func upload(scv *s3.S3, file *Content, config *Config, c chan string) {
 	// Avoid publish content in debug mode
 	if !config.Debug {
 		_, err := scv.PutObject(&s3.PutObjectInput{
-			Bucket:        aws.String(config.AwsBucket),
+			Bucket:        aws.String(config.Aws.Bucket),
 			Key:           aws.String(file.BlogPath),
 			ACL:           aws.String("public-read"),
 			Body:          file.Body,
