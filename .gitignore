@@ -1,3 +1,4 @@
 config.json
 gobls3
 docker-compose.yml
+.env

@@ -43,17 +43,20 @@ func PublishContent(config *Config, content []*Content) {
 }
 
 func upload(scv *s3.S3, file *Content, config *Config, c chan string) {
-	_, err := scv.PutObject(&s3.PutObjectInput{
-		Bucket:        aws.String(config.AwsBucket),
-		Key:           aws.String(file.BlogPath),
-		ACL:           aws.String("public-read"),
-		Body:          file.Body,
-		ContentLength: aws.Int64(file.Size),
-		ContentType:   aws.String(file.Type),
-	})
-	if err != nil {
-		c <- fmt.Sprintf("Failed: %s. Error: %s\n", file.BlogPath, err.Error())
-		return
+	// Avoid publish content in debug mode
+	if !config.Debug {
+		_, err := scv.PutObject(&s3.PutObjectInput{
+			Bucket:        aws.String(config.AwsBucket),
+			Key:           aws.String(file.BlogPath),
+			ACL:           aws.String("public-read"),
+			Body:          file.Body,
+			ContentLength: aws.Int64(file.Size),
+			ContentType:   aws.String(file.Type),
+		})
+		if err != nil {
+			c <- fmt.Sprintf("Failed: %s. Error: %s\n", file.BlogPath, err.Error())
+			return
+		}
 	}
 	c <- fmt.Sprintf("Uploaded: %s\n", file.BlogPath)
 }

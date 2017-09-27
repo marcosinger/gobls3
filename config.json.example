@@ -1,8 +1,0 @@
-{
-  "blog_path": "",
-  "aws_key": "",
-  "aws_secret": "",
-  "aws_s3_bucket": "",
-  "aws_s3_bucket_region": "",
-  "debug": false
-}

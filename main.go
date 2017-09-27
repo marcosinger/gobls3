@@ -6,8 +6,7 @@ import (
 )
 
 func main() {
-	config, err := LoadConfig()
-	exitOnError(err)
+	config := LoadConfig()
 
 	files, err := GetContentToUpdate(config.BlogPath)
 	exitOnError(err)
