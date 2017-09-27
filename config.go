@@ -1,35 +1,42 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 // Config contain the configuration
 type Config struct {
-	BlogPath        string `json:"blog_path"`
-	AwsKey          string `json:"aws_access_key_id"`
-	AwsSecret       string `json:"aws_secret_access_key"`
-	AwsBucket       string `json:"aws_s3_bucket"`
-	AwsBucketRegion string `json:"aws_s3_bucket_region"`
-	Debug           bool   `json:"debug"`
+	BlogPath        string
+	AwsKey          string
+	AwsSecret       string
+	AwsBucket       string
+	AwsBucketRegion string
+	Debug           bool
 }
 
 // LoadConfig function for get configuration from file
-func LoadConfig() (*Config, error) {
-	file, err := os.Open("config.json")
+func LoadConfig() *Config {
+	debug, err := strconv.ParseBool(env("DEBUG"))
 	if err != nil {
-		fmt.Println(err)
-		return &Config{}, err
+		panic("Invalid parameter type")
 	}
 
-	decoder := json.NewDecoder(file)
-	config := Config{}
-
-	if err = decoder.Decode(&config); err != nil {
-		fmt.Println(err)
-		return &Config{}, err
+	return &Config{
+		BlogPath:        env("BLOG_PATH"),
+		AwsKey:          env("AWS_ACCESS_KEY"),
+		AwsSecret:       env("AWS_SECRET_ACCESS_KEY"),
+		AwsBucket:       env("AWS_S3_BUCKET"),
+		AwsBucketRegion: env("AWS_S3_BUCKET_REGION"),
+		Debug:           debug,
 	}
-	return &config, nil
+}
+
+func env(name string) string {
+	val := os.Getenv(name)
+	if val == "" {
+		panic(fmt.Sprintf("Environment variable %s was not set", name))
+	}
+	return val
 }
