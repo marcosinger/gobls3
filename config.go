@@ -8,11 +8,8 @@ import (
 
 // Config contain the configuration
 type Config struct {
-	BlogPath,
-	AwsKey,
-	AwsSecret,
-	AwsBucket,
-	AwsBucketRegion string
+	BlogPath string
+	Aws      ConfigAmazon
 	Debug    bool
 	Database ConfigDatabase
 }
@@ -20,6 +17,11 @@ type Config struct {
 // ConfigDatabase contain the database configuration
 type ConfigDatabase struct {
 	Host, Name string
+}
+
+// ConfigAmazon contain the aws configuration
+type ConfigAmazon struct {
+	Key, Secret, Bucket, Region string
 }
 
 // LoadConfig function for get configuration from file
@@ -30,13 +32,26 @@ func LoadConfig() *Config {
 	}
 
 	return &Config{
-		BlogPath:        env("BLOG_PATH"),
-		AwsKey:          env("AWS_ACCESS_KEY"),
-		AwsSecret:       env("AWS_SECRET_ACCESS_KEY"),
-		AwsBucket:       env("AWS_S3_BUCKET"),
-		AwsBucketRegion: env("AWS_S3_BUCKET_REGION"),
-		Debug:           debug,
-		Database:        getDatabaseConfig(),
+		BlogPath: env("BLOG_PATH"),
+		Aws:      getAwsConfig(),
+		Debug:    debug,
+		Database: getDatabaseConfig(),
+	}
+}
+
+func getAwsConfig() ConfigAmazon {
+	return ConfigAmazon{
+		Key:    env("AWS_ACCESS_KEY"),
+		Secret: env("AWS_SECRET_ACCESS_KEY"),
+		Bucket: env("AWS_S3_BUCKET"),
+		Region: env("AWS_S3_BUCKET_REGION"),
+	}
+}
+
+func getDatabaseConfig() ConfigDatabase {
+	return ConfigDatabase{
+		Host: env("DB_HOST"),
+		Name: env("DB_NAME"),
 	}
 }
 
@@ -46,11 +61,4 @@ func env(name string) string {
 		panic(fmt.Sprintf("Environment variable %s was not set", name))
 	}
 	return val
-}
-
-func getDatabaseConfig() ConfigDatabase {
-	return ConfigDatabase{
-		Host: env("DB_HOST"),
-		Name: env("DB_NAME"),
-	}
 }
