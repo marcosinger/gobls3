@@ -8,6 +8,9 @@ import (
 func main() {
 	config := LoadConfig()
 
+	_, err := DatabaseConnect(config)
+	exitOnError(err)
+
 	files, err := GetContentToUpdate(config.BlogPath)
 	exitOnError(err)
 
