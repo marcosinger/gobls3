@@ -32,9 +32,7 @@ func PublishContent(config *Config, content []*Content) {
 
 	files := len(content)
 	for i := 1; i <= files; i++ {
-		if config.Debug {
-			log.Print(<-messages)
-		}
+		log.Print(<-messages)
 	}
 
 	fmt.Println()
@@ -44,7 +42,7 @@ func PublishContent(config *Config, content []*Content) {
 
 func upload(scv *s3.S3, file *Content, config *Config, c chan string) {
 	// Avoid publish content in debug mode
-	if !config.Debug {
+	if config.Debug == false {
 		_, err := scv.PutObject(&s3.PutObjectInput{
 			Bucket:        aws.String(config.Aws.Bucket),
 			Key:           aws.String(file.BlogPath),
