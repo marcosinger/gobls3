@@ -1,0 +1,65 @@
+{
+    "memo": "1c566a2e4e35a74d6aa72fabcd37f83d0f9d020ebfee87c7515d2379ef9a4adb",
+    "projects": [
+        {
+            "name": "github.com/aws/aws-sdk-go",
+            "branch": "master",
+            "revision": "732d3fcb3efeb7d4f1e2e18f3456eec27960ae38",
+            "packages": [
+                "aws",
+                "aws/awserr",
+                "aws/awsutil",
+                "aws/client",
+                "aws/client/metadata",
+                "aws/corehandlers",
+                "aws/credentials",
+                "aws/credentials/ec2rolecreds",
+                "aws/credentials/endpointcreds",
+                "aws/credentials/stscreds",
+                "aws/defaults",
+                "aws/ec2metadata",
+                "aws/endpoints",
+                "aws/request",
+                "aws/session",
+                "aws/signer/v4",
+                "internal/shareddefaults",
+                "private/protocol",
+                "private/protocol/query",
+                "private/protocol/query/queryutil",
+                "private/protocol/rest",
+                "private/protocol/restxml",
+                "private/protocol/xml/xmlutil",
+                "service/s3",
+                "service/sts"
+            ]
+        },
+        {
+            "name": "github.com/go-ini/ini",
+            "version": "v1.28.2",
+            "revision": "20b96f641a5ea98f2f8619ff4f3e061cff4833bd",
+            "packages": [
+                "."
+            ]
+        },
+        {
+            "name": "github.com/jmespath/go-jmespath",
+            "version": "0.2.2",
+            "revision": "3433f3ea46d9f8019119e7dd41274e112a2359a9",
+            "packages": [
+                "."
+            ]
+        },
+        {
+            "name": "gopkg.in/mgo.v2",
+            "branch": "v2",
+            "revision": "3f83fa5005286a7fe593b055f0d7771a7dce4655",
+            "packages": [
+                ".",
+                "bson",
+                "internal/json",
+                "internal/sasl",
+                "internal/scram"
+            ]
+        }
+    ]
+}
