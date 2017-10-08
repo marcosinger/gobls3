@@ -5,7 +5,7 @@ FROM golang:1.8 as builder
 COPY . /go/src/gobls3
 WORKDIR /go/src/gobls3
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/app
+RUN dep ensure && CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/app
 
 
 # Runtime stage
